@@ -1,0 +1,16 @@
+{
+  "name": "contact-app-nodejs",
+  "version": "1.0.0",
+  "description": "Program CLI interaktif berbasis readline",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Edi",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "coba.git"
+  }
+}
