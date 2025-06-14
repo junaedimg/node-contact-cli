@@ -12,5 +12,10 @@
   "repository": {
     "type": "git",
     "url": "coba.git"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "validator": "^13.15.15",
+    "yargs": "^18.0.0"
   }
 }
