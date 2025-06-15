@@ -1,7 +1,12 @@
 // ! Mengambil argument dari command line
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { simpanContacts } from "./contacts.js";
+import {
+	simpanContacts,
+	listContact,
+	detailContact,
+	deleteContact,
+} from "./contacts.js";
 
 const argv = yargs(hideBin(process.argv));
 
@@ -34,6 +39,48 @@ argv.command({
 		const { nama, noHP, email } = contact;
 
 		simpanContacts(nama, noHP, email);
+	},
+});
+// .demandCommand();
+
+// ! Menampilkan daftar semua nama dan no hp contact
+argv.command({
+	command: "list",
+	describe: "Menampilkan semua nama & no hp contact",
+	handler(argv) {
+		listContact();
+	},
+});
+
+// ! Menampilkan detail sebuah contact berdasarkan nama
+argv.command({
+	command: "detail",
+	describe: "Menampilkan detail sebuah contact berdasarkan nama",
+	builder: {
+		nama: {
+			describe: "Nama Lengkap",
+			demandOption: true,
+			type: "string",
+		},
+	},
+	handler(argv) {
+		detailContact(argv.nama);
+	},
+});
+
+// ! Menghapus sebuah contact berdasarkan nama
+argv.command({
+	command: "delete",
+	describe: "Menghapus sebuah contact berdasarkan nama",
+	builder: {
+		nama: {
+			describe: "Nama Lengkap",
+			demandOption: true,
+			type: "string",
+		},
+	},
+	handler(argv) {
+		deleteContact(argv.nama);
 	},
 });
 

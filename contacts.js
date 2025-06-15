@@ -33,11 +33,17 @@ if (!fs.existsSync(dataPath)) {
 // 		});
 // 	});
 // };
+const loadContact = () => {
+	const fileBuffer = fs.readFileSync("data/contacts.json", "utf-8");
+	const contacts = JSON.parse(fileBuffer);
+
+	return contacts;
+};
 
 export const simpanContacts = (nama, noHP, email) => {
 	const contact = { nama, noHP, email };
-	const fileBuffer = fs.readFileSync("data/contacts.json", "utf-8");
-	const contacts = JSON.parse(fileBuffer);
+
+	const contacts = loadContact();
 
 	const duplikat = contacts.find((c) => c.nama === nama);
 
@@ -58,13 +64,13 @@ export const simpanContacts = (nama, noHP, email) => {
 			return false;
 		}
 	} else {
-		console.log(chalk.red.inverse.bold("Email tidak boleh kosong !"));
-		return false;
+		// console.log(chalk.red.inverse.bold("Email tidak boleh kosong !"));
+		// return false;
 	}
 
 	// ! validasi noHP
 	if (!validator.isMobilePhone(noHP, "id-ID")) {
-		console.log(chalk.red.inverse.bold("Nomor tidak valid!"));
+		console.log(chalk.red.inverse.bold("Nomor hp tidak valid!"));
 		return false;
 	}
 
@@ -73,6 +79,47 @@ export const simpanContacts = (nama, noHP, email) => {
 	console.log(chalk.green.inverse.bold("Data berhasil disimpan :)"));
 
 	// rl.close();
+};
+
+export const listContact = () => {
+	const contacts = loadContact();
+	console.log(chalk.blue.inverse.bold("Daftar Kontak"));
+	contacts.forEach((contact, i) => {
+		console.log(`${i + 1}. ${contact.nama} - ${contact.noHP} `);
+	});
+};
+
+export const detailContact = (nama) => {
+	const contacts = loadContact();
+
+	const contact = contacts.find(
+		(contact) => contact.nama.toLowerCase() === nama.toLowerCase()
+	);
+
+	if (!contact) {
+		console.log(chalk.red.inverse.bold("Nama tidak ditemukan !"));
+		return false;
+	}
+	console.log(chalk.blue.inverse.bold("Daftar Kontak"));
+	console.log(contact.nama);
+	if (contact.email) console.log(contact.email);
+	console.log(contact.noHP);
+};
+
+export const deleteContact = (nama) => {
+	const contacts = loadContact();
+
+	const newContact = contacts.filter(
+		(contact) => contact.nama.toLowerCase() !== nama.toLowerCase()
+	);
+
+	if (contacts.length === newContact.length) {
+		console.log(chalk.red.inverse.bold("Nama tidak ditemukan !"));
+		return;
+	}
+		
+	fs.writeFileSync(dataPath, JSON.stringify(newContact));
+	console.log(chalk.yellow.inverse.bold("Contact berhasil dihapus !"));
 };
 
 // ! ==================== cara export pada JS ES6  ====================
